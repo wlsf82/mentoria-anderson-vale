@@ -1,0 +1,16 @@
+{
+  "name": "protractor-sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "webdriver-manager update && protractor"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine-spec-reporter": "^4.2.1",
+    "protractor": "^5.4.0",
+    "protractor-helper": "^3.3.5"
+  }
+}
