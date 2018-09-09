@@ -7,7 +7,7 @@ module.exports.config = {
     browserName: 'chrome',
     chromeOptions: {
       args: [
-        "--headless",
+        /*"--headless",*/
         "--disable-gpu",
         "--window-size=1024,768",
       ],
