@@ -1,3 +1,4 @@
+// After refactoring all tests to use the protractor-helepr library the below two lines will not be needed anymore.
 const EC = protractor.ExpectedConditions;
 const DEFAULT_TIMEOUT_IN_MS = 5000;
 
