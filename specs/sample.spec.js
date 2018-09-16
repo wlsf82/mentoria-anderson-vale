@@ -108,4 +108,8 @@ describe('Hackernews fake', () => {
 
     expect(tableItems.count()).toBe(99);
   });
+
+  it('renders no item when searching for an unknown term', () => {
+
+  });
 });
