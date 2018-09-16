@@ -1,13 +1,15 @@
 const EC = protractor.ExpectedConditions;
 const DEFAULT_TIMEOUT_IN_MS = 5000;
 
+const helper = require('protractor-helper');
+
 describe('Hackernews fake', () => {
   beforeEach(() => browser.get(''));
 
   it('renders 100 items in the first visit', () => {
     const tableItems = element.all(by.css('.table .table-row'));
 
-    browser.wait(EC.visibilityOf(tableItems.last()), DEFAULT_TIMEOUT_IN_MS, 'last table item not visible');
+    helper.waitForElementVisibility(tableItems.last());
 
     expect(tableItems.count()).toBe(100);
   });
