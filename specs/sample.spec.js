@@ -4,8 +4,7 @@ const DEFAULT_TIMEOUT_IN_MS = 5000;
 describe('Hackernews fake', () => {
   beforeEach(() => browser.get(''));
 
-
-  xit('renders 100 items in the first visit', () => {
+  it('renders 100 items in the first visit', () => {
     const tableItems = element.all(by.css('.table .table-row'));
 
     browser.wait(EC.visibilityOf(tableItems.last()), DEFAULT_TIMEOUT_IN_MS, 'last table item not visible');
@@ -13,7 +12,7 @@ describe('Hackernews fake', () => {
     expect(tableItems.count()).toBe(100);
   });
 
-  xit('quickly shows a loading component when clicking the More button', () => {
+  it('quickly shows a loading component when clicking the More button', () => {
     const moreButton = element(by.css('.interactions button[type="button"]'));
     const loading = element(by.className('loading'));
 
@@ -24,63 +23,88 @@ describe('Hackernews fake', () => {
     expect(loading.isDisplayed()).toBe(true);
   });
 
-  xit('renders 200 items after clicking the More button', () => {
+  it('renders 200 items after clicking the More button', () => {
+    const moreButton = element(by.css('.interactions button[type="button"]'));
+    const loading = element(by.className('loading'));
 
-    element(buttonText('button')).click();
+    browser.wait(EC.elementToBeClickable(moreButton), DEFAULT_TIMEOUT_IN_MS);
 
+    moreButton.click();
+
+    browser.wait(EC.visibilityOf(loading), DEFAULT_TIMEOUT_IN_MS);
+    browser.wait(EC.stalenessOf(loading), DEFAULT_TIMEOUT_IN_MS);
+
+    const tableItems = element.all(by.css('.table .table-row'));
+
+    browser.wait(EC.visibilityOf(tableItems.last()), DEFAULT_TIMEOUT_IN_MS);
+
+    expect(tableItems.count()).toBe(200);
   });
 
-  xit('quickly shows a loading component when searching for the word "react" for the first time', () => {
+  it('quickly shows a loading component when searching for the word "react" for the first time', () => {
+    const searchField = element(by.css('input[type="text"]'));
+    const searchButton = element(by.css('button[type="submit"]'));
+    const loading = element(by.className('loading'));
 
-    const sClear = element(by.css('input[type="text"]'));
-    browser.wait(EC.elementToBeClickable(sClear), DEFAULT_TIMEOUT_IN_MS);
-    sClear.clear();
+    browser.wait(EC.visibilityOf(searchField), DEFAULT_TIMEOUT_IN_MS);
+    browser.wait(EC.elementToBeClickable(searchButton), DEFAULT_TIMEOUT_IN_MS);
 
-    const sSend = element(by.css('input[type="text"]'));
-    browser.wait(EC.elementToBeClickable(sSend), DEFAULT_TIMEOUT_IN_MS);
-    sSend.sendKeys('react');
+    searchField.clear();
+    searchField.sendKeys('react');
+    searchButton.click();
 
-    element(by.buttonText('Search')).click();
-
-    const el = element(by.cssContainingText('div a', 'Relicensing React, Jest, Flow, and Immutable.js'));
-    browser.wait(EC.elementToBeClickable(el), DEFAULT_TIMEOUT_IN_MS);
-
-    expect(el.isDisplayed()).toBeTruthy();
-
-
+    browser.wait(EC.visibilityOf(loading), DEFAULT_TIMEOUT_IN_MS);
   })
-  xit('renders 100 items after searching for the word "react" for the first time', () => {
-    // Write test logic here.
+  it('renders 100 items after searching for the word "react" for the first time', () => {
+    const searchField = element(by.css('input[type="text"]'));
+    const searchButton = element(by.css('button[type="submit"]'));
+    const loading = element(by.className('loading'));
+
+    browser.wait(EC.visibilityOf(searchField), DEFAULT_TIMEOUT_IN_MS);
+    browser.wait(EC.elementToBeClickable(searchButton), DEFAULT_TIMEOUT_IN_MS);
+
+    searchField.clear();
+    searchField.sendKeys('react');
+    searchButton.click();
+
+    browser.wait(EC.visibilityOf(loading), DEFAULT_TIMEOUT_IN_MS);
+    browser.wait(EC.stalenessOf(loading), DEFAULT_TIMEOUT_IN_MS);
+
+    const tableItems = element.all(by.css('.table .table-row'));
+
+    browser.wait(EC.visibilityOf(tableItems.last()), DEFAULT_TIMEOUT_IN_MS);
+
+    expect(tableItems.count()).toBe(100);
   });
 
-  xit('does not renders a loading component after searching for "react" and then "redux" again', () => {
-    
-    browser.wait(EC.elementToBeClickable(sClear), DEFAULT_TIMEOUT_IN_MS);
-    sClear.clear();
+  it('does not renders a loading component after searching for "react" and then "redux" again', () => {
+    const searchField = element(by.css('input[type="text"]'));
+    const searchButton = element(by.css('button[type="submit"]'));
+    const loading = element(by.className('loading'));
 
-    const sReact = element(by.css('input[type="text"]'));
-    browser.wait(EC.elementToBeClickable(sReact), DEFAULT_TIMEOUT_IN_MS);
-    sReact.sendKeys('react');
+    browser.wait(EC.visibilityOf(searchField), DEFAULT_TIMEOUT_IN_MS);
+    browser.wait(EC.elementToBeClickable(searchButton), DEFAULT_TIMEOUT_IN_MS);
 
-    element(by.buttonText('Search')).click()
+    searchField.clear();
+    searchField.sendKeys('react');
+    searchButton.click();
 
-    
-    browser.wait(EC.elementToBeClickable(sClear), DEFAULT_TIMEOUT_IN_MS);
-    sClear.clear();
+    browser.wait(EC.visibilityOf(loading), DEFAULT_TIMEOUT_IN_MS);
+    browser.wait(EC.stalenessOf(loading), DEFAULT_TIMEOUT_IN_MS);
 
-    const sRedux = element(by.css('input[type="text"]'));
-    browser.wait(EC.elementToBeClickable(sRedux), DEFAULT_TIMEOUT_IN_MS);
-    sRedux.sendKeys('react');
+    searchField.clear();
+    searchField.sendKeys('redux');
+    searchButton.click();
 
-    element(by.buttonText('Search')).click()
-
+    browser.wait(EC.stalenessOf(loading), DEFAULT_TIMEOUT_IN_MS);
   });
 
   it('shows only 99 items after dismissing one item', () => {
     const tableItems = element.all(by.css('.table .table-row'));
+    const dismissButtonOfFirstItem = element.all(by.css('.table-row .button-inline')).first();
 
     browser.wait(EC.visibilityOf(tableItems.last()), DEFAULT_TIMEOUT_IN_MS, 'last table item not visible');
-    element(by.buttonText('Dismiss')).click();
+    dismissButtonOfFirstItem.click();
 
     expect(tableItems.count()).toBe(99);
   });

@@ -7,7 +7,7 @@ module.exports.config = {
     browserName: 'chrome',
     chromeOptions: {
       args: [
-        /*"--headless",*/
+        "--headless",
         "--disable-gpu",
         "--window-size=1024,768",
       ],
@@ -28,5 +28,5 @@ module.exports.config = {
     showColors: true,
     includeStackTrace: true,
   },
-  // highlightDelay: 1000,
+  // highlightDelay: 3000,
 };
