@@ -113,6 +113,19 @@ describe('Hackernews fake', () => {
   });
 
   it('renders no item when searching for an unknown term', () => {
+    const tableItems = element.all(by.css('.table .table-row'));
+    const searchButton = element(by.css('button[type="submit"]'));
+    const searchField = element(by.css('input[type="text"]'));
+
+    helper.waitForElementVisibility(tableItems.last());
+    
+    searchField.clear();
+    searchField.sendKeys('tiruliro');
+    searchButton.click();
+
+    helper.waitForElementNotToBeVisible(tableItems.last());
+
+    expect(tableItems.count()).toBe(0);
 
   });
 });
