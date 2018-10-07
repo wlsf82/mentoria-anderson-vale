@@ -38,7 +38,8 @@ describe('Hackernews fake', () => {
 
     it('quickly shows a loading component when searching for the word "react" for the first time', () => {
       helper.waitForElementVisibility(samplePage.loading);
-    })
+    });
+
     it('renders 100 items after searching for the word "react" for the first time', () => {
       helper.waitForElementVisibility(samplePage.loading);
       helper.waitForElementNotToBePresent(samplePage.loading);
