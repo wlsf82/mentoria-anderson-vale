@@ -4,44 +4,34 @@ const DEFAULT_TIMEOUT_IN_MS = 5000;
 
 const helper = require('protractor-helper');
 
+const SamplePage = require('../page-objects/sample.po');
+
 describe('Hackernews fake', () => {
-  beforeEach(() => browser.get(''));
+  const samplePage = new SamplePage();
+
+  beforeEach(() => browser.get(samplePage.relativeUrl));
 
   it('renders 100 items in the first visit', () => {
-    const tableItems = element.all(by.css('.table .table-row'));
+    helper.waitForElementVisibility(samplePage.tableItems.last());
 
-    helper.waitForElementVisibility(tableItems.last());
-
-    expect(tableItems.count()).toBe(100);
+    expect(samplePage.tableItems.count()).toBe(100);
   });
 
   it('quickly shows a loading component when clicking the More button', () => {
-    const moreButton = element(by.css('.interactions button[type="button"]'));
-    const loading = element(by.className('loading'));
+    helper.clickWhenClickable(samplePage.moreButton);
 
-    browser.wait(EC.elementToBeClickable(moreButton), DEFAULT_TIMEOUT_IN_MS);
-
-    moreButton.click();
-
-    expect(loading.isDisplayed()).toBe(true);
+    expect(samplePage.loading.isDisplayed()).toBe(true);
   });
 
   it('renders 200 items after clicking the More button', () => {
-    const moreButton = element(by.css('.interactions button[type="button"]'));
-    const loading = element(by.className('loading'));
+    helper.clickWhenClickable(samplePage.moreButton);
 
-    browser.wait(EC.elementToBeClickable(moreButton), DEFAULT_TIMEOUT_IN_MS);
+    helper.waitForElementVisibility(samplePage.loading);
+    helper.waitForElementNotToBePresent(samplePage.loading);
 
-    moreButton.click();
+    helper.waitForElementVisibility(samplePage.tableItems.last());
 
-    browser.wait(EC.visibilityOf(loading), DEFAULT_TIMEOUT_IN_MS);
-    browser.wait(EC.stalenessOf(loading), DEFAULT_TIMEOUT_IN_MS);
-
-    const tableItems = element.all(by.css('.table .table-row'));
-
-    browser.wait(EC.visibilityOf(tableItems.last()), DEFAULT_TIMEOUT_IN_MS);
-
-    expect(tableItems.count()).toBe(200);
+    expect(samplePage.tableItems.count()).toBe(200);
   });
 
   it('quickly shows a loading component when searching for the word "react" for the first time', () => {
@@ -116,6 +106,7 @@ describe('Hackernews fake', () => {
     const tableItems = element.all(by.css('.table .table-row'));
     const searchButton = element(by.css('button[type="submit"]'));
     const searchField = element(by.css('input[type="text"]'));
+    const loading = element(by.className('loading'));
 
     helper.waitForElementVisibility(tableItems.last());
     
@@ -123,7 +114,8 @@ describe('Hackernews fake', () => {
     searchField.sendKeys('tiruliro');
     searchButton.click();
 
-    helper.waitForElementNotToBeVisible(tableItems.last());
+    helper.waitForElementVisibility(loading);
+    helper.waitForElementNotToBePresent(loading);
 
     expect(tableItems.count()).toBe(0);
 
