@@ -28,5 +28,5 @@ module.exports.config = {
     showColors: true,
     includeStackTrace: true,
   },
-  // highlightDelay: 3000,
+  highlightDelay: 3000,
 };
