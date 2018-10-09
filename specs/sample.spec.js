@@ -30,7 +30,7 @@ describe('Hackernews fake', () => {
     expect(samplePage.tableItems.count()).toBe(200);
   });
 
-  describe("Search", () => {
+  describe('first searching for "react"', () => {
     beforeEach(() => {
       helper.clearFieldWhenVisibleAndFillItWithText(samplePage.searchField, 'react');
       helper.clickWhenClickable(samplePage.searchButton);
