@@ -10,7 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "jasmine-spec-reporter": "^4.2.1",
-    "protractor": "^5.4.0",
-    "protractor-helper": "^3.4.5"
+    "protractor": "^5.4.1",
+    "protractor-helper": "^3.5.5"
   }
 }
